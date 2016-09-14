@@ -1,0 +1,22 @@
+/* @import "sections/_search.css" */
+
+
+.search {
+    h1 {
+        margin-bottom: 1rem;
+    }
+    
+    em {
+        font-size: 120%;
+        font-weight: $font-weight-bold;
+        vertical-align: -6%;
+    }
+    
+    div.searchtype{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid black;
+    }
+    padding-bottom: 3rem;
+}

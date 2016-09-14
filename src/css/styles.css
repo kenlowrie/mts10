@@ -1,0 +1,13 @@
+/* styles.css */
+
+@import "variables";
+@import "base";
+@import "mixins";
+@import "sections";
+
+@import "sections/login";
+@import "sections/movietable";
+@import "sections/search";
+@import "sections/modify";
+@import "sections/settings";
+@import "sections/admin";

@@ -1,0 +1,55 @@
+/* @import "sections/_admin.css" */
+
+.admin {
+
+    font-size: 85%;
+    
+    @media $small {
+        font-size: 120%;
+    }
+    
+    .error {
+        h3 {
+            margin-bottom: 1rem;
+        }
+        h4 {
+            color: darkred;
+            margin: 0 auto;
+        }
+    }
+    h1 {
+        margin-bottom: 1rem;
+    }
+    
+    .postmessage {
+        padding: 10px;
+        line-height: 140%;
+        color: color(gray lightness(55%));
+    }
+    
+    form.adminform {
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        padding: 10px 10px 1rem;
+        
+        div.adminbutton {
+           button {
+               font-weight: $font-weight-heavy;
+           }
+        }
+    }
+    
+    em {
+        font-size: 120%;
+        font-weight: $font-weight-bold;
+        vertical-align: -6%;
+    }
+    
+    div.admintext{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid black;
+    }
+    padding-bottom: 3rem;
+}

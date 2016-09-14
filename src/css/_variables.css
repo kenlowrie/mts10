@@ -1,0 +1,30 @@
+/* @import _variables.css */
+
+@import 'https://fonts.googleapis.com/css?family=Raleway:300,600,700';
+
+$font-main: Raleway, Helvetica, Arial, sans-serif;
+$font-weight-normal: 300;
+$font-weight-bold: 600;
+$font-weight-heavy: 700;
+
+/* color scheme hues */
+$cs-hue: #E2E2DF;
+
+/* generic colors */
+$pastel-yellow: #fff373;
+$pastel-yellow-alt: #fff69f;
+$pastel-red: #ff866a;
+$dark-orange: #ef662f;
+
+$color-main: color(darkgray shade(50%));
+$color-background: white;
+
+/* TODO: Figure out exactly what I want these widths to bet set to */
+
+$small: screen and (min-width: 600px);
+$medium: screen and (min-width: 900px);
+$large: screen and (min-width: 1200px);
+
+$container-default-width: 100%;
+$container-max-width: 1200px;
+

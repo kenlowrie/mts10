@@ -1,0 +1,35 @@
+/* @import "sections/_modify.css" */
+
+
+.addormodify {
+
+    margin-bottom: 3rem;
+
+    h2 {
+        margin-bottom: 1rem;
+    }
+    
+    p {
+        padding: 1rem;
+    }
+    
+    em {
+        font-size: 120%;
+        font-weight: $font-weight-bold;
+        vertical-align: -6%;
+    }
+    
+    div.update{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid black;
+    }
+    div.inline {
+        text-align: center;
+        form {
+            display:inline;
+        }
+    }
+}
+

@@ -1,0 +1,26 @@
+/* @import "sections/_login.css" */
+
+#login {
+    .container {
+        margin: 0 auto;
+
+        .heading {
+            h3 {
+                margin-bottom: 1rem;
+            }
+        }
+        
+        .authentication, .form-horizontal, .form-group {
+            .help {
+                h4 {
+                    font-weight:$font-weight-bold;
+                    margin-bottom: 1rem;
+                }
+                em {
+                    font-weight:$font-weight-bold;
+                }
+            }
+        }
+    }
+}
+

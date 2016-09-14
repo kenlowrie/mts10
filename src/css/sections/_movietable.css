@@ -1,0 +1,70 @@
+/* @import "sections/_movietable.css" */
+
+.movietable {
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    table {
+        width: 100%;
+        overflow-x: auto;
+    }
+    
+    th {
+        font-weight: bold;
+        padding-left: 2px;
+    }
+    
+    tr {
+        font:1.2rem;
+        height: 20px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #e5e5e5;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #d5d5d5;
+    }
+    
+    td {
+        font-size: 1.8rem;
+        color:#14285f;
+        height: 20px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    
+    @media $small {
+        td {
+            font-size: 2.4rem;
+        }
+    }
+
+    td {
+        a {
+            text-decoration:none;
+            font-weight:bold;
+
+            &:hover {
+                color: #FF3300;
+                text-decoration:underline;
+            }
+        }
+        .ipencil {
+            font-size: 2.8rem;
+            padding: 3px 5px;
+            color: color(gold shade(10%));
+            @mixin tinyTextShadow;
+        }
+        .idelete {
+            font-size: 3.6rem;
+            padding: 3px 5px;
+            color:red;
+            @mixin tinyTextShadow;
+        }
+    }
+}
+
