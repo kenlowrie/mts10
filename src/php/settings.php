@@ -108,7 +108,7 @@ function display_settings()
     print("</form>\r\n");
 }
 
-include('header.inc');        // display the standard page header
+include('inc/_def_header.html');        // display the standard page header
 
 div_start_settings();
 
@@ -116,6 +116,6 @@ display_settings();               // display the search form
 
 div_end_settings();
 
-include('footer.inc');        // display the standard page footer
+include('inc/_def_footer.html');        // display the standard page footer
 
 ?>

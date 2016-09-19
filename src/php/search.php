@@ -76,10 +76,10 @@ function display_form()
 	div_end_search();
 }
 
-include('header.inc');        // display the standard page header
+include('inc/_def_header.html');        // display the standard page header
 
 display_form();               // display the search form
 
-include('footer.inc');        // display the standard page footer
+include('inc/_def_footer.html');        // display the standard page footer
 
 ?>

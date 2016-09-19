@@ -46,7 +46,7 @@ gulp.task('cptxt', function(){
 });
 
 gulp.task('cpinc', function(){
-   gulp.src(incSources) 
+   gulp.src(incSources,{base: srcDir}) 
     .pipe(include())
 	.on('error', gutil.log)
     .pipe(cached('inccache'))

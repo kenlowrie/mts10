@@ -36,7 +36,7 @@ $whoami = 'admin.php';		// Use this in messages so we know where we are
 include ('session.php');	// Make sure we are logged in
 include ('sqlfuncs.php');	// SQL functions
 
-include('header.inc');		// Draw the standard page layout
+include('inc/_def_header.html');		// Draw the standard page layout
 
 print("<div class=\"admin\">\r\n");
 
@@ -48,7 +48,7 @@ if (!is_admin()){
 	print("<h3>MTS Administrative Page Error</h3>");
 	print("<h4>$whoami: you must be an administrator to run this script.</h4>\r\n");
 	print("</div>\r\n");
-	include ('footer.inc');
+	include ('inc/_def_footer.html');
 	exit();
 }
 
@@ -107,5 +107,5 @@ draw_menu();
 
 print("</div>\r\n");
 
-include('footer.inc');		// draw the standard footer
+include('inc/_def_footer.html');		// draw the standard footer
 ?>

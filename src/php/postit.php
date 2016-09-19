@@ -48,13 +48,13 @@ function end_section()
 
 function print_message($msg, $exit=0)
 {
-	include ('header0.inc');
+	include ('inc/_skinny_header.html');
 	
 	start_section();
     print ("<h4>Message: $msg</h4>");
     end_section();
     
-	include ('footer0.inc');
+	include ('inc/_skinny_footer.html');
 	if($exit) exit();
 }
 
@@ -116,7 +116,7 @@ db_set_query(NULL);			// set the query to find ALL
 db_count_rows();			// get a count so the display page knows how many records we have
 
 // dump the default page information now.
-include ('header.inc');		// the default header
-include ('mainbody.inc');	// the default body content
-include ('footer.inc');		// the default footer
+include ('inc/_def_header.html');		// the default header
+include ('inc/_mainbody.html');	// the default body content
+include ('inc/_def_footer.html');		// the default footer
 ?>

@@ -9,7 +9,7 @@ $type  = $_GET['type'];       // my edit type as a GET parameter
 $uid   = $_GET['uid'];        // my UID (record ID) as a GET parameter
 $srow  = $_GET['start_row'];  // the starting row to display when I go back
 
-include('header.inc');        // display our standard page layout
+include('inc/_def_header.html');        // display our standard page layout
 
 /* Validate that I've been called with the required parameters:
 **
@@ -25,7 +25,7 @@ if (!IsSet($srow)) die("$alias called without a starting row number.");
 if($type != ADD_FORM and $type != ADD_COMMIT and $type != ADD_FORCE){
 	print("$alias called with an invalid edit type!<br>\r\n");
      print("program execution cannot continue.<br>\r\n");
-	include('footer.inc');
+	include('inc/_def_footer.html');
 	exit();
 }
 
@@ -85,5 +85,5 @@ elseif($type == ADD_COMMIT or $type == ADD_FORCE){
      }
 }
 
-include('footer.inc');
+include('inc/_def_footer.html');
 ?>

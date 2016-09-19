@@ -78,7 +78,7 @@ if ($including == NULL)
 {
      include_once ('session.php');
      include_once ('sqlfuncs.php');
-     include ('header.inc');
+     include ('inc/_def_header.html');
 }
 
 table_start();                          // generate the start table HTML
@@ -175,6 +175,6 @@ print ("Debug: Row count is $total_rows\r\n<br>");
 */
 if ($including == NULL)
 {
-     include ('footer.inc');
+     include ('inc/_def_footer.html');
 }
 ?>
