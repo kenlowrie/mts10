@@ -1,30 +1,40 @@
 'use strict';
 
 var gulp = require('gulp');  
-var gutil = require( 'gulp-util' );  
-var ftp = require( 'vinyl-ftp' );
+var sftp = require( 'gulp-sftp-up4' );
+var fs = require('fs-extra');
 
 /** Configuration **/
-var user = process.env.FTP_USER;  
-var password = process.env.FTP_PWD;  
 var host = process.env.FTP_HOST;  
-var port = 21;  
+var auth = 'privateKeyCustom';
+var authFile = '../../.ftppass';
 var localFilesGlob = ['**/*', '!ftpxfer.js', '!phpserver.js'];  
-var remoteFolder = '/public_html/sd/mts10'
+
+/*function checkForFTPPassOverride(ftpPassFileName) {
+
+	var sourceName = '../../' + ftpPassFilename;
+	
+	try {
+		fs.copySync(sourceName, authFilename)
+		console.log("Auth override for " + authFilename + " successful!");
+	} catch (err) {
+		console.error("Autho override for " + authFilename + " failed.\r\n" + err);
+	}
+}*/
 
 
-// helper function to build an FTP connection based on our configuration
-function getFtpConnection() {  
-    return ftp.create({
-        host: host,
-        port: port,
-        user: user,
-        password: password,
-        parallel: 5,
-        log: gutil.log
-    });
+//var remoteFolder = '/public_html/sd/mts10'
+var remoteFolder = '/var/www/vhosts/klowrie.net/httpdocs/sd/mts10'
+
+function deploy(){
+    return gulp.src(localFilesGlob, {base: '.', buffer: false })
+        .pipe( sftp({
+            host: host,
+            auth: auth,
+            authFile: authFile,
+            remotePath: remoteFolder
+        }));
 }
-
 /**
  * Deploy task.
  * Copies the new files to the server
@@ -32,34 +42,23 @@ function getFtpConnection() {
  * Usage: `FTP_USER=someuser FTP_PWD=somepwd gulp ftp-deploy`
  */
 gulp.task('ftp-deploy', function() {
-
-    var conn = getFtpConnection();
-
-    return gulp.src(localFilesGlob, {base: '.', buffer: false })
-        .pipe( conn.newer( remoteFolder ) ) // only upload newer files 
-        .pipe( conn.dest( remoteFolder ) )
-    ;
+    return deploy();
 });
 
 /**
  * Watch deploy task.
  * Watches the local copy for changes and copies the new files to the server whenever an update is detected
  *
- * Usage: `FTP_USER=someuser FTP_PWD=somepwd gulp ftp-deploy-watch`
+ * Usage: `FTP_HOST=some.ip.add.r gulp ftp-deploy-watch`
  */
 gulp.task('ftp-deploy-watch', function() {
-
-    var conn = getFtpConnection();
 
     gulp.watch(localFilesGlob)
     .on('change', function(event) {
       console.log('Changes detected! Uploading file "' + event.path + '", ' + event.type);
 
-      return gulp.src( [event.path], { base: '.', buffer: false } )
-        .pipe( conn.newer( remoteFolder ) ) // only upload newer files 
-        .pipe( conn.dest( remoteFolder ) )
-      ;
+      return deploy();
     });
 });
 
-gulp.task('default',['ftp-deploy']);
+gulp.task('default',gulp.series(['ftp-deploy']));

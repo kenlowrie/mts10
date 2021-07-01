@@ -3,7 +3,7 @@ var gulp = require('gulp'),
 	php = require('gulp-connect-php'),
 	fs = require('fs-extra');
 
-// helper function to build an FTP connection based on our configuration
+// allow overriding the login info creds via files in root folder...
 function checkForAuthOverride(authFilename) {
 
 	var sourceName = '../../' + authFilename;
@@ -16,13 +16,14 @@ function checkForAuthOverride(authFilename) {
 	}
 }
 
-gulp.task('override-auth', function(){
+gulp.task('override-auth', function(done){
 
 	checkForAuthOverride('users.logininfo.php');
 	checkForAuthOverride('sql.logininfo.php');
+	done();
 });
 
-gulp.task('php', ['override-auth'], function() {
+gulp.task('php', gulp.series(['override-auth'], function(done) {
     php.server({}, function () {
         browserSync({ proxy: '127.0.0.1:8000'});
     });
@@ -30,6 +31,6 @@ gulp.task('php', ['override-auth'], function() {
     gulp.watch(['*','css/*', 'js/*','images/*']).on('change', function () {
         browserSync.reload();
     });
-});
+}));
 
-gulp.task('default', ['php']);
+gulp.task('default', gulp.series(['php']));

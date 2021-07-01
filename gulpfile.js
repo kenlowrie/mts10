@@ -40,13 +40,13 @@ if (env === 'dev'){
 console.log('Building mts10 in ' + env + ' mode to ' + outDir);
 
 gulp.task('cptxt', function(){
-   gulp.src(txtFiles)
+   return gulp.src(txtFiles)
     .pipe(cached('txtcache'))
   	.pipe(gulp.dest(outDir));
 });
 
 gulp.task('cpinc', function(){
-   gulp.src(incSources,{base: srcDir}) 
+   return gulp.src(incSources,{base: srcDir}) 
     .pipe(include())
 	.on('error', gutil.log)
     .pipe(cached('inccache'))
@@ -54,32 +54,33 @@ gulp.task('cpinc', function(){
 });
 
 gulp.task('cpjs', function(){
-   gulp.src(jsSources,{base: srcDir}) 
+   return gulp.src(jsSources,{base: srcDir}) 
     .pipe(gulpif(env === 'rel', uglify()))
     .pipe(cached('jscache'))
   	.pipe(gulp.dest(outDir));
 });
 
 gulp.task('cpphp', function(){
-   gulp.src(phpSources) 
+   return gulp.src(phpSources) 
     .pipe(cached('phpcache'))
+	.pipe(debug())
   	.pipe(gulp.dest(outDir));
 });
 
 gulp.task('cpgulpphpsrv', function(){
-   gulp.src(phpGulpSrc)
+   return gulp.src(phpGulpSrc)
    	.pipe(debug())
   	.pipe(gulp.dest(outDir));
 });
 
-gulp.task( 'html', ['cpinc'], function() {
-	gulp.src(htmlSources)
+gulp.task( 'html', gulp.series('cpinc', function() {
+	return gulp.src(htmlSources)
 	    .pipe(include())
 		.on('error', gutil.log)
 	    .pipe(cached('htmlcache'))
 		.pipe(gulpif(env === 'rel', minifyHTML()))
 		.pipe(gulp.dest(outDir))
-});
+}));
 
 var postcssTasks = [precss(),autoprefixer()];
 if (env === 'rel'){
@@ -87,26 +88,26 @@ if (env === 'rel'){
 }
 
 gulp.task( 'css', function() {
-	gulp.src(cssSources)
+	return gulp.src(cssSources)
 		.pipe(postcss(postcssTasks))
 		.on('error', gutil.log)
 		.pipe(gulp.dest(outDir))
 });
 
-gulp.task('watch', function() {
-  gulp.watch(srcDir + '**/*.css', ['css']);
-  gulp.watch(srcDir + '**/*.html', ['html']);
-  gulp.watch(srcDir + 'inc/*', ['html']);
-  gulp.watch(srcDir + 'tmpl/*', ['html']);
-  gulp.watch(srcDir + 'php/*', ['cpphp']);
-  gulp.watch(srcDir + 'js/*.js', ['cpjs']);
-  gulp.watch(srcDir + 'txt/*', ['cptxt']);
-  gulp.watch(srcDir + 'gulpfiles/*.js', ['cpgulpphpsrv']);
-  
+gulp.task('watch', function(done) {
+  gulp.watch(srcDir + '**/*.css', gulp.series(['css']));
+  gulp.watch(srcDir + '**/*.html', gulp.series(['html']));
+  gulp.watch(srcDir + 'inc/*', gulp.series(['html']));
+  gulp.watch(srcDir + 'tmpl/*', gulp.series(['html']));
+  gulp.watch(srcDir + 'php/*', gulp.series(['cpphp']));
+  gulp.watch(srcDir + 'js/*.js', gulp.series(['cpjs']));
+  gulp.watch(srcDir + 'txt/*', gulp.series(['cptxt']));
+  gulp.watch(srcDir + 'gulpfiles/*.js', gulp.series(['cpgulpphpsrv']));
+  done();
 });
 
 var buildtasks=['cptxt', 'html', 'css', 'cpphp', 'cpjs', 'cpgulpphpsrv'];
 
-gulp.task('build', buildtasks); 
+gulp.task('build', gulp.series(buildtasks)); 
 
-gulp.task('default', buildtasks.concat(['watch']));
+gulp.task('default', gulp.parallel(buildtasks.concat(['watch'])));
