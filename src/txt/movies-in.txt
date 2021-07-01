@@ -193,7 +193,7 @@
 "Real Men";"WS";"Comedy";"PG13";"";"tt0093828"
 "The Man From Snowy River";"WS";"RomCom";"PG";"";"tt0084296"
 "A History of Violence";"WS";"Action";"R";"";"tt0399146"
-"Pirates of the Caribbean Dead Man\'s Chest";"WS";"Action";"PG13";"";""
+"Pirates of the Caribbean Dead Man's Chest";"WS";"Action";"PG13";"";""
 "24 Season 5";"WS";"Action";"NR";"";""
 "Nacho Libre";"WS";"Comedy";"PG";"";"tt0457510"
 "Talladega Nights The Ballad of Ricky Bobby";"WS";"Comedy";"PG13";"";""
