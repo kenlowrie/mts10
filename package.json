@@ -15,9 +15,9 @@
   "devDependencies": {
     "autoprefixer": "^6.4.0",
     "browser-sync": "^2.14.3",
-    "cssnano": "^3.7.4",
+    "cssnano": "^5.0.6",
     "fs-extra": "^0.30.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-cached": "^1.1.0",
     "gulp-connect-php": "0.0.8",
     "gulp-debug": "^2.1.2",
@@ -25,9 +25,9 @@
     "gulp-if": "^2.0.1",
     "gulp-minify-html": "^1.0.6",
     "gulp-postcss": "^6.1.1",
+    "gulp-sftp-up4": "^0.1.8",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
-    "precss": "^1.4.0",
-    "vinyl-ftp": "^0.5.0"
+    "precss": "^1.4.0"
   }
 }
