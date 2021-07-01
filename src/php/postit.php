@@ -112,6 +112,7 @@ $_SESSION['username'] = $_POST['username'];
 // Go ahead and initialize the session variables and SQL functions and some SQL defaults
 include ('session.php');
 include ('sqlfuncs.php');
+
 db_set_query(NULL);			// set the query to find ALL
 db_count_rows();			// get a count so the display page knows how many records we have
 

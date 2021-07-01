@@ -14,10 +14,10 @@ function db_connect()
      // Yuk that I have these credentials hard coded, but since I cannot
      // get more than one user account working on Yahoo's MySQL install,
      // this is OK for now.
-     $link = mysql_connect('localhost', db_user(), db_pass()) or die("cannot connect to database");
-	mysql_select_db(db_name());
+     $mysqli = mysqli_connect(db_hostname(), db_user(), db_pass(), db_name()) or die("cannot connect to database");
+	 $mysqli->select_db(db_name());
 
-     return $link;
+     return $mysqli;
 }
 
 /*
@@ -30,7 +30,7 @@ function db_connect()
 */
 function db_create_table()
 {
-   	$link = db_connect();
+   	$mysqli = db_connect();
 
 	$sql = 'CREATE TABLE `info` ('
         . ' `uid` INT UNSIGNED NOT NULL AUTO_INCREMENT, '
@@ -47,10 +47,10 @@ function db_create_table()
         . ' ENGINE = InnoDB'
         . ' COMMENT = \'movie titles\''; 
 
-	$result = mysql_query($sql);
+	$result = mysqli_query($mysqli, $sql);
 //	var_dump($result);
 //	echo mysql_error();
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 /*
@@ -58,22 +58,22 @@ function db_create_table()
 */
 function db_drop_table()
 {
-   	$link = db_connect();
+   	$mysqli = db_connect();
 
 	$sql = "DROP TABLE `info`";
-	$result = mysql_query($sql);
-	mysql_close($link);
+	$result = mysqli_query($mysqli,$sql);
+	mysqli_close($mysqli);
 }
 
 /*
 ** Insert a row into the 'info' table. Return the result from MySQL
 */
-function db_insert_row($title,$format,$genre,$rating,$loanee,$imdbid)
+function db_insert_row($mysqli, $title,$format,$genre,$rating,$loanee,$imdbid)
 {
 	$sql = "INSERT INTO `info` (`title`, `format`, `genre`, `rating`, `loanee`, `imdbid`) 
-			VALUES ('$title', '$format', '$genre', '$rating', '$loanee', '$imdbid')";
+			VALUES (\"$title\", '$format', '$genre', '$rating', '$loanee', '$imdbid')";
 
-	$result = mysql_query($sql);
+	$result = mysqli_query($mysqli, $sql);
 //	var_dump($result);
 //	echo mysql_error();
 	return $result;
@@ -87,10 +87,10 @@ function db_insert_row($title,$format,$genre,$rating,$loanee,$imdbid)
 function db_load_from_file()
 {
      // connect to the database and open the input file
-	$link = db_connect();
+	$mysqli = db_connect();
 	$fd = fopen("movies-in.txt","r") or die("Can't open filename movies-in.txt");
 
-	$count = 1;
+	$count = 0;
 	while (!feof($fd)){           // until you reach EOF on the file
          	$line = fgets($fd);      // read a line from the file
 		if (feof($fd)) break;    // don't process the last empty line
@@ -121,14 +121,14 @@ function db_load_from_file()
 			continue;
 		}
           // Insert the row into the table
-		db_insert_row($record[1],$record[2],$record[3],$record[4],$record[5],$record[6]);
+		db_insert_row($mysqli,$record[1],$record[2],$record[3],$record[4],$record[5],$record[6]);
 	}
 
      print "Loaded $count rows into the info table from 'movies-int.txt' flat file";
 	
 	// close the file and the database connection	
 	fclose($fd);
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 /*
@@ -138,15 +138,15 @@ function db_load_from_file()
 function db_dump_to_file()
 {
      // get your connection to the database, and open the flat file for writing
-	$link = db_connect();
+	$mysqli = db_connect();
 	$fo = fopen("movies-out.txt","w") or die("Can't open filename output.txt");
 
      // select all records in the table
-	$result = mysql_query("SELECT title, format, genre, rating, loanee, imdbid FROM info");
+	$result = mysqli_query($mysqli, "SELECT title, format, genre, rating, loanee, imdbid FROM info");
 
      // process each row in the result set
 	$count = 0;
-	while($row = mysql_fetch_row($result)){
+	while($row = mysqli_fetch_row($result)){
           // format the line by putting " around fields and ; between fields
     	     $line = "\"$row[0]\";\"$row[1]\";\"$row[2]\";\"$row[3]\";\"$row[4]\";\"$row[5]\"\r\n";
           // write the line to the flat file
@@ -157,7 +157,7 @@ function db_dump_to_file()
 
      // close the output file and the database connection
 	fclose($fo);
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 /*
@@ -168,12 +168,12 @@ function db_dump_to_file()
 function db_lookup_record($title)
 {
      // get a connection, then do a query looking for a title match
-     $link = db_connect();
+     $mysqli = db_connect();
      $sql = "SELECT * FROM `info` WHERE title='$title'";
-     $result = mysql_query($sql);
+     $result = mysqli_query($mysqli,$sql);
      // see how many rows were found and return that result
-     $found = mysql_num_rows($result);
-     mysql_close($link);
+     $found = mysqli_num_rows($result);
+     mysqli_close($mysqli);
 
      return $found;           // 0 if none found
 }
@@ -187,18 +187,18 @@ function db_lookup_record($title)
 function db_read_record($uid)
 {
      // get a connection, and do a lookup by the record ID
-	$link = db_connect();
+	$mysqli = db_connect();
 	$sql = "SELECT title,format,genre,rating,loanee,imdbid FROM `info` WHERE uid=$uid";
-	$result = mysql_query($sql);
+	$result = mysqli_query($mysqli,$sql);
 
      if (!$result){                // if it failed, the record isn't there
 	    $record['ok'] = 0;        // simply return an array with 'ok' set to 0
-		mysql_close($link);
+		mysqli_close($mysqli);
 		return $record;
 	}
 
      // fetch the row and break out the fields into the record array
-	$row = mysql_fetch_row($result);
+	$row = mysqli_fetch_row($result);
 	
 	$record['title']  = $row[0];
 	$record['format'] = $row[1];
@@ -208,7 +208,7 @@ function db_read_record($uid)
      $record['imdbid'] = $row[5];
 	
      // close the connection, set 'ok' to 1, and return the record
-	mysql_close($link);
+	mysqli_close($mysqli);
 	$record['ok'] = 1;
 	return $record;
 }
@@ -219,7 +219,7 @@ function db_read_record($uid)
 function db_write_record($alias, $uid, $record)
 {
      // get a connection, then break down the fields from the record array
-	$link = db_connect();
+	$mysqli = db_connect();
 
 	$title  = $record['title'];
 	$format = $record['format'];
@@ -237,11 +237,11 @@ function db_write_record($alias, $uid, $record)
 						 `imdbid` = '$imdbid' WHERE `uid` = $uid LIMIT 1"; 
 
      // execute the statement and close the connection
-	$result = mysql_query($sql);
+	$result = mysqli_query($mysqli,$sql);
      if (!$result){
 		print("$alias failed updating record id $uid\r\n<br>");
 	}
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 /*
@@ -250,17 +250,17 @@ function db_write_record($alias, $uid, $record)
 function db_delete_record($alias, $uid)
 {
      // get a connection
-	$link = db_connect();
+	$mysqli = db_connect();
 
      // form the delete statement
 	$sql = "DELETE FROM `info` WHERE `uid` = $uid LIMIT 1"; 
 
 	// execute the statement and close the connection
-	$result = mysql_query($sql);
+	$result = mysqli_query($mysqli, $sql);
      if (!$result){
 		print("$alias failed deleting record id $uid\r\n<br>");
 	}
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 /*
@@ -269,7 +269,7 @@ function db_delete_record($alias, $uid)
 function db_add_record($alias, $record)
 {
 	// get a connection
-	$link = db_connect();
+	$mysqli = db_connect();
 
      // extract the fields from the record array
 	$title  = $record['title'];
@@ -280,13 +280,13 @@ function db_add_record($alias, $record)
 	$imdbid = $record['imdbid'];
 
      // insert the row into the table	
-	$result = db_insert_row($title,$format,$genre,$rating,$loanee,$imdbid);
+	$result = db_insert_row($mysqli,$title,$format,$genre,$rating,$loanee,$imdbid);
 	
      if (!$result){
 		print("$alias failed adding record \"$title\"\r\n<br>");
 	}
 	// close the connection
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 /*
@@ -379,6 +379,7 @@ function db_set_filter($filter_type, $keywords, $rating, $genre)
 */
 function db_get_query()
 {
+	// echo "Get query: <" . $_SESSION['default_query'] . ">";
 	return $_SESSION['default_query'];
 }
 
@@ -392,16 +393,16 @@ function db_get_query()
 */
 function db_count_rows()
 {
-	$link = db_connect();
+	$mysqli = db_connect();
 
-	$result = mysql_query(db_get_query());
+	$result = mysqli_query($mysqli, db_get_query());
      if ($result){
-		$_SESSION['total_rows'] = mysql_num_rows($result);
+		$_SESSION['total_rows'] = mysqli_num_rows($result);
 	}
 	else {
 		$_SESSION['total_rows'] = 0;
 	}	
-	mysql_close($link);
+	mysqli_close($mysqli);
 }
 
 ?>

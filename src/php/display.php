@@ -25,19 +25,19 @@ function table_start()
 /*
 ** Read and display the rows from the database in the table
 */
-function db_read_rows($start_row, $how_many)
+function db_read_rows($mysqli, $start_row, $how_many)
 {
     global $columns;
 
      // get the standard query, then add a LIMIT to it so we can get the page we want
-	$result = mysql_query(db_get_query()." LIMIT $start_row,$how_many");
+	$result = mysqli_query($mysqli, db_get_query()." LIMIT $start_row,$how_many");
 
     $edit_form = EDIT_FORM;       // id that tells update.php to put up an edit form
     $delete_form = DELETE_FORM;   // id that tells delete.php to put up a delete form
 	$counter = 0;
 
      // for each row in the table
-	while($row = mysql_fetch_row($result)){
+	while($row = mysqli_fetch_row($result)){
           $imdbid = trim(ltrim($row[5]));    // clean up the imdb ID if it's there so we can use it
 		print("  <tr>\r\n");
           // the next two items are the edit and delete button's in the table
@@ -114,8 +114,8 @@ if (!IsSet($start_row)) $start_row = 0;      // assume starting row is 0
 
 // connect to the database, populate the table rows, and close the connection
 $link = db_connect();
-db_read_rows($start_row, $how_many);
-mysql_close($link);
+db_read_rows($link,$start_row, $how_many);
+mysqli_close($link);
 
 // now draw the navigation links in the bottom of the table
 $next_set = $start_row + $how_many;

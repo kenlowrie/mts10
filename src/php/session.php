@@ -7,14 +7,14 @@
 */
 session_start();
 
-define(ROWS_TO_DISPLAY,22);        // how many rows are displayed at one time
-define(EDIT_FORM,1);               // type used to specify display an edit form
-define(EDIT_COMMIT,2);             // type used to specify commit changes to record
-define(DELETE_FORM,3);             // type used to specify display a delete form
-define(DELETE_COMMIT,4);           // type used to specify commit a delete record     
-define(ADD_FORM,5);                // type used to specify display an add form
-define(ADD_COMMIT,6);              // type used to specify commit an add record
-define(ADD_FORCE,7);               // type used to specify commit a duplicate add record
+define('ROWS_TO_DISPLAY',22);        // how many rows are displayed at one time
+define('EDIT_FORM',1);               // type used to specify display an edit form
+define('EDIT_COMMIT',2);             // type used to specify commit changes to record
+define('DELETE_FORM',3);             // type used to specify display a delete form
+define('DELETE_COMMIT',4);           // type used to specify commit a delete record     
+define('ADD_FORM',5);                // type used to specify display an add form
+define('ADD_COMMIT',6);              // type used to specify commit an add record
+define('ADD_FORCE',7);               // type used to specify commit a duplicate add record
 
 $logged_in = $_SESSION['logged_in'];	// This is my session variable that tells if I have logged in
 
