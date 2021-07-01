@@ -2,7 +2,7 @@
 
 ### Movie Tracking System
 
-Welcome to the Movie Tracking System project. This document should help you get the project up and running on your own server. If you have questions, or would like to provide feedback and/or to report a bug, feel free to contact the author, Ken Lowrie, at [www.kenlowrie.com](http://www.kenlowrie.com/).
+Welcome to the Movie Tracking System project. This document should help you get the project up and running on your own server. If you have questions, or would like to provide feedback and/or to report a bug, feel free to contact the author, Ken Lowrie, at [www.kenlowrie.com](https://www.kenlowrie.com/).
 
 ### Attributions
 
@@ -14,7 +14,7 @@ Once you've installed Node.js, simply checkout the source tree from Github to a 
 
 Then, run "gulp" to build a development version, or "NODE_ENV=rel gulp" to build a release version (the only difference is that your CSS and JS will be minified in the release version.
 
-You will need to modify two files before building the code (or at least before uploading to your server. This files are:
+You will need to modify two files before building the code (or at least before uploading to your server. The files are:
 
 	sql.logininfo.php
 	users.logininfo.php
