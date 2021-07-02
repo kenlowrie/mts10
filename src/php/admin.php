@@ -80,12 +80,12 @@ if (IsSet($type) and $type == 38){
 			break;
 			
 		case 'load':
-			print "$whoami: Loading data from from flat file...<br>";
+			print "$whoami: Loading data from from flat file 'movies-in.txt' ...<br>";
 			db_load_from_file();	// load data from a comma delimited file
 			break;
 		
 		case 'dump':
-			print "$whoami: Dumping data to flat file...<br>";
+			print "$whoami: Dumping data to flat file 'movies-out.txt' ...<br>";
 			db_dump_to_file();		// dump data to a comma delimited file
 			break;
 		
