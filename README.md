@@ -14,12 +14,14 @@ Once you've installed Node.js, simply checkout the source tree from Github to a 
 
 Then, run "gulp" to build a development version, or "NODE_ENV=rel gulp" to build a release version (the only difference is that your CSS and JS will be minified in the release version.
 
-You will need to modify two files before building the code (or at least before uploading to your server. The files are:
+You will need to modify two (or 3) files before building the code (or at least before uploading to your server. The files are:
 
 	sql.logininfo.php
 	users.logininfo.php
  
 These files contain the database name and login information, as well as the default set of users for your movie tracker. I will provide additional information on setting these up before I wrap up this project, but for now, I will let you try to figure it out on your own...
+
+If you will use the ftpxfer.js Gulp file for transferring files to a remote web server via SFTP, you'll also need to modify the .ftppass file (copy the one in the auth/ directory to the root of your build directory and modify it). Do NOT check it in with your credentials and/or private keys!
 
 Running Gulp will create a "Build/dev" or "Build/rel" depending on how the NODE_ENV variable is set. Go into the corresponding directory, and then transfer all the files up to your server, maintaining the directory structure, and you'll be all set.
 
